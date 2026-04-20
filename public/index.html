@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello World - Railway</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #count {
+      font-size: 64px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .label {
+      color: #666;
+      margin-bottom: 16px;
+    }
+    button {
+      padding: 12px 32px;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 2px solid #333;
+      background: #fff;
+    }
+    button:hover {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hello World!</h1>
+  <p>這是 Node.js + Docker + GitHub Actions + Railway 的 Demo</p>
+  <div>
+    <p id="count">…</p>
+    <p class="label">點擊次數</p>
+    <button onclick="increment()">+1</button>
+  </div>
+  <script>
+    async function loadCount() {
+      const res = await fetch('/api/counter')
+      const data = await res.json()
+      document.getElementById('count').textContent = data.count
+    }
+
+    async function increment() {
+      const res = await fetch('/api/counter', { method: 'POST' })
+      const data = await res.json()
+      document.getElementById('count').textContent = data.count
+    }
+
+    loadCount()
+  </script>
+</body>
+</html>

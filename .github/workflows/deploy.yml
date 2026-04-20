@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Job 1: 測試（build 確認沒有錯誤）
+  # Job 1: 測試（確認語法沒有錯誤）
   test:
     runs-on: ubuntu-latest
     steps:
@@ -22,8 +22,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build（確認沒有編譯錯誤）
-        run: npm run build
+      - name: Check syntax
+        run: npm run check
 
   # Job 2: Build Docker Image 並 Push 到 Docker Hub
   docker-build-push:
