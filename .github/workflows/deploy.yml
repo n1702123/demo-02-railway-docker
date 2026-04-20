@@ -57,4 +57,7 @@ jobs:
     steps:
       - name: Trigger Railway Deploy
         run: |
-          curl -X POST "${{ secrets.RAILWAY_WEBHOOK_URL }}"
+          npm install -g @railway/cli
+          railway redeploy --service ${{ secrets.RAILWAY_SERVICE_ID }} --yes
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
