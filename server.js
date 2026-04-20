@@ -1,6 +1,7 @@
 import http from 'http'
 import fs from 'fs'
 import path from 'path'
+import os from 'os'
 import { fileURLToPath } from 'url'
 import Redis from 'ioredis'
 
@@ -21,6 +22,22 @@ const server = http.createServer(async (req, res) => {
     const count = await redis.incr('counter')
     res.writeHead(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify({ count }))
+  } else if (req.method === 'GET' && req.url === '/api/info') {
+    let redisStatus = 'unknown'
+    try {
+      await redis.ping()
+      redisStatus = 'connected'
+    } catch {
+      redisStatus = 'error'
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify({
+      hostname: os.hostname(),
+      nodeEnv: process.env.NODE_ENV ?? 'development',
+      port: PORT,
+      redisUrl: process.env.REDIS_URL ? 'REDIS_URL (Railway)' : 'localhost:6379 (local)',
+      redisStatus,
+    }))
   } else {
     res.writeHead(404)
     res.end()
